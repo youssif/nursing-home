@@ -1,5 +1,6 @@
 class QueriesController < ApplicationController
   before_action :set_query, only: [:show, :edit, :update, :destroy]
+  # Validate the zipcode actually exists
 
   # GET /queries
   # GET /queries.json
@@ -27,10 +28,11 @@ class QueriesController < ApplicationController
     @query = Query.new(query_params)
 
     respond_to do |format|
-      # Validate the zipcode actually exists
-      if Query.check_zipcode(@query.zipcode)==true
+      if @query.save
+        puts 'hello'
         # redirect to the nursing home results index page
-        format.html { redirect_to controller: 'homes', action: 'index', notice: 'Query was successfully created.' }
+        format.html { render 'homes/index', notice: 'Query was successfully created.' }
+        format.json { render :index, status: :created, location: @home }
       else
         format.html { render :new }
         format.json { render json: @query.errors, status: :unprocessable_entity }
