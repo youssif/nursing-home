@@ -5,11 +5,10 @@ class Home < ActiveRecord::Base
     require 'json'
     distance = (distance*1609.34).to_s
     long_lat = Home.get_long_lat(zipcode.to_s)
-    latitude = long_lat["lat"].to_s
-    puts latitude
-    longitude = long_lat["lng"].to_s 
-    puts longitude
-    uri = URI('https://data.medicare.gov/resource/b27b-2uc7.json?$where=within_circle(location, '+latitude+','+longitude+' , '+distance+')')
+    latitude = long_lat[0].to_s
+    longitude = long_lat[1].to_s
+
+    uri = URI.parse(URI.encode('https://data.medicare.gov/resource/b27b-2uc7.json?$where=within_circle(location, '+latitude+', '+longitude+' , '+distance+')'))
     puts uri
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
@@ -34,10 +33,9 @@ class Home < ActiveRecord::Base
     response = http.request(request)
     response = JSON.parse(response.body)
     # puts response
-    latitude = response["results"][0]["geometry"]["bounds"]["northeast"]['lat']
-    longitude = latitude = response["results"][0]["geometry"]["bounds"]["northeast"]['lng']
-    puts latitude.to_s
-    puts longitude.to_s
+    latitude = response["results"][0]["geometry"]["bounds"]["northeast"]["lat"]
+    longitude = response["results"][0]["geometry"]["bounds"]["northeast"]['lng']
+    return latitude, longitude
 
   end
 
