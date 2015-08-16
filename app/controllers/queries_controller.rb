@@ -30,6 +30,8 @@ class QueriesController < ApplicationController
     respond_to do |format|
       if @query.save
         puts 'hello'
+        session[:zipcode] = @query.zipcode
+        session[:desired_distance] = @query.desired_distance.to_i
         # redirect to the nursing home results index page
         format.html { render 'homes/index', notice: 'Query was successfully created.' }
         format.json { render :index, status: :created, location: @home }
@@ -72,6 +74,6 @@ class QueriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def query_params
-      params.require(:query).permit(:zipcode)
+      params.require(:query).permit(:zipcode, :desired_distance)
     end
 end

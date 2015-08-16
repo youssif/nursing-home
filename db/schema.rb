@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150809060219) do
+ActiveRecord::Schema.define(version: 20150816003224) do
 
   create_table "homes", force: :cascade do |t|
     t.string   "zipcode"
@@ -21,8 +21,9 @@ ActiveRecord::Schema.define(version: 20150809060219) do
 
   create_table "queries", force: :cascade do |t|
     t.string   "zipcode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.decimal  "desired_distance"
   end
 
 end

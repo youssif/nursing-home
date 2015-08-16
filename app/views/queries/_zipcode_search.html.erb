@@ -13,7 +13,9 @@
 
   <div class="field">
     <%= f.label :zipcode %><br>
-    <%= f.text_field :zipcode %>
+    <%= f.text_field :zipcode %><br>
+    <%= f.label :desired_distance %><br>
+    <%= f.select(:desired_distance, [5, 10, 15, 25, 50]) %>
   </div>
   <div class="actions">
     <%= f.submit %>

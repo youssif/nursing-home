@@ -4,7 +4,7 @@ class HomesController < ApplicationController
   # GET /homes
   # GET /homes.json
   def index
-    @homes = Home.all
+    @homes = Home.get_raw_nursing_home_data(session[:zipcode], session[:desired_distance])
   end
 
   # GET /homes/1
