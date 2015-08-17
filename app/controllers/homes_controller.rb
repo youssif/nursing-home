@@ -5,6 +5,9 @@ class HomesController < ApplicationController
   # GET /homes.json
   def index
     @homes = Home.get_raw_nursing_home_data(session[:zipcode], session[:desired_distance])
+    @average_rating = Home.average_and_std_dev(@homes)[0]
+    @standard_deviation = Home.average_and_std_dev(@homes)[1]
+    
   end
 
   # GET /homes/1

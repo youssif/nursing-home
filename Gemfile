@@ -27,6 +27,8 @@ gem 'better_errors'
 gem 'google_directions'
 gem 'geocoder'
 
+gem 'descriptive_statistics'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

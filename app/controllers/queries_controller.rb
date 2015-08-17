@@ -33,7 +33,7 @@ class QueriesController < ApplicationController
         session[:zipcode] = @query.zipcode
         session[:desired_distance] = @query.desired_distance.to_i
         # redirect to the nursing home results index page
-        format.html { render 'homes/index', notice: 'Query was successfully created.' }
+        format.html { redirect_to homes_path, notice: 'Query was successfully created.' }
         format.json { render :index, status: :created, location: @home }
       else
         format.html { render :new }
