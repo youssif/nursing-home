@@ -18,16 +18,11 @@
       </thead>
     </tr>
     <% @homes.each do |home| %>
-      <div class=<%= "long_lat#{@homes.index(home)}" %> id=<%= "map#{@homes.index(home)}" %> longitude = <%= home['location']['coordinates'][0] %> latitude = <%= home['location']['coordinates'][1]%> ></div>
-          <div class='nursing_home'></div>
-          <div id=<%= "pano#{@homes.index(home)}" %>></div>
       <tr>
         <td>
-          <!-- 
-          <%= image_tag("https://maps.googleapis.com/maps/api/streetview?size=400x400&location=#{home['location']['coordinates'][1]},#{home['location']['coordinates'][0]}&fov=90&heading=200&pitch=5") %> -->
-          
-        </td>
-        <td><%= home["provider_name"] %></td>
+          <%= image_tag("https://maps.googleapis.com/maps/api/streetview?size=120x120&location=#{home['location']['coordinates'][1]},#{home['location']['coordinates'][0]}&fov=90&pitch=5&
+          key=AIzaSyCXRKnlZV2d4CcJjW6PmKqCmLW5netbodo") %></td>
+        <td><%= link_to home["provider_name"], id: home["federal_provider_number"]%></td>
         <td><%= home["qm_rating"] %></td>
         <td></td>
         <td><%= home['number_of_residents_in_certified_beds'] %> / <%= home['number_of_certified_beds'] %></td>
@@ -47,33 +42,3 @@ Standard Deviation:
 <br>
 
 <%= link_to 'New Home', new_home_path %>
-<script>
-
-  function initialize() {
-    for(index=0; index < $('.nursing_home').size(); index++){  
-      var longitude = Number($('.long_lat'+index).attr('longitude'));
-      var latitude = Number($('.long_lat'+index).attr('latitude'));
-
-      var nursingHome = {lat: longitude, lng: latitude};
-
-      var map = new google.maps.Map(document.getElementById('map'+index), {
-        center: nursingHome,
-        zoom: 14
-      });
-      var panorama = new google.maps.StreetViewPanorama(
-          document.getElementById('pano'+index), {
-            position: nursingHome,
-            pov: {
-              heading: 34,
-              pitch: 10
-            }
-          });
-      map.setStreetView(panorama);
-      console.log('is this working?');
-    }
-  }
-
-</script>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?signed_in=true&callback=initialize">
-</script>
