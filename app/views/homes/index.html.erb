@@ -21,10 +21,12 @@
       <tr>
         <td>
           <%= image_tag("https://maps.googleapis.com/maps/api/streetview?size=120x120&location=#{home['location']['coordinates'][1]},#{home['location']['coordinates'][0]}&fov=90&pitch=5&
-          key=AIzaSyCXRKnlZV2d4CcJjW6PmKqCmLW5netbodo") %></td>
-        <td><%= link_to home["provider_name"], id: home["federal_provider_number"]%></td>
+          key=AIzaSyCXRKnlZV2d4CcJjW6PmKqCmLW5netbodo") %>
+        </td>
+        <td><%= link_to home["provider_name"], home_path(id: home['federal_provider_number'])%>
+        </td>
         <td><%= home["qm_rating"] %></td>
-        <td></td>
+        <td><%= Home.tier(@average_rating, @standard_deviation, home) %></td>
         <td><%= home['number_of_residents_in_certified_beds'] %> / <%= home['number_of_certified_beds'] %></td>
         <td> <%= home['location_address'] %> </td>
         <td><%= home["location_city"] %>, <%= home["location_state"] %></td>
@@ -33,11 +35,6 @@
     <% end %>
   </tbody>
 </table>
-
-Average rating:
-<%= @average_rating %>
-Standard Deviation:
-<%= @standard_deviation %>
 
 <br>
 

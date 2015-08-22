@@ -10,6 +10,12 @@ class Home < ActiveRecord::Base
     return average_rating, std_dev
   end
 
+  def self.get_home_by_id(home_id)
+    require 'net/https'
+    url = 'https://data.medicare.gov/resource/b27b-2uc7.json?federal_provider_number='+home_id
+    return Home.socrata_api_request(url)
+  end
+
   def self.average_score(ratings)
     require 'descriptive_statistics'
     return ratings.mean
@@ -18,6 +24,32 @@ class Home < ActiveRecord::Base
   def self.standard_deviation(ratings)
     require 'descriptive_statistics'
     return ratings.standard_deviation
+  end
+
+  def self.tier(average, std_dev, home)
+    if 5-average < std_dev == true
+      upper = average+0.1
+    else
+      upper = average + std_dev-0.1
+      mid = average + std_dev-0.1
+    end
+    mid = average - std_dev
+
+    home_rating = home['qm_rating'].to_i
+    if home_rating > upper
+      return "green"
+    elsif home_rating > mid
+      return "orange"
+    else
+      return "yellow"
+    end
+
+  end
+
+  def self.nursing_homes_sorted_by_rating(zipcode, distance)
+    homes = Home.get_raw_nursing_home_data(zipcode, distance)
+    homes.sort! { |a,b| a['qm_rating'].to_i <=> b['qm_rating'].to_i }
+    return homes.reverse
   end
 
   def self.get_raw_nursing_home_data(zipcode, distance)

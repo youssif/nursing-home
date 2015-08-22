@@ -4,10 +4,9 @@ class HomesController < ApplicationController
   # GET /homes
   # GET /homes.json
   def index
-    @homes = Home.get_raw_nursing_home_data(session[:zipcode], session[:desired_distance])
+    @homes = Home.nursing_homes_sorted_by_rating(session[:zipcode], session[:desired_distance])
     @average_rating = Home.average_and_std_dev(@homes)[0]
     @standard_deviation = Home.average_and_std_dev(@homes)[1]
-    
   end
 
   # GET /homes/1
@@ -67,7 +66,7 @@ class HomesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_home
-      @home = Home.find(params[:id])
+      @home = Home.get_home_by_id(params[:id])[0]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
